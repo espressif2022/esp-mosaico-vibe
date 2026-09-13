@@ -12,6 +12,7 @@ from . import __version__
 from .commands import install, list_devices, monitor, recover
 from .doctor import diagnose_host, print_diagnosis
 from .errors import MosaicoError
+from .game import build_game, create_game, simulate_game
 from .runtime import RunContext
 
 
@@ -175,6 +176,47 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Show endpoint, ESP-IDF version, session, and capabilities",
     )
+
+    game_parser = commands.add_parser(
+        "game",
+        help="Create and build MicroPixel games",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    game_commands = game_parser.add_subparsers(dest="game_command", required=True)
+    game_create = game_commands.add_parser(
+        "create",
+        help="Create a MicroPixel Guest game under games/",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    game_create.add_argument("path", help="New game directory under games/")
+    game_create.add_argument("--app-id", required=True, help="Stable MicroPixel App ID")
+    game_create.add_argument("--title", required=True, help="App Hall display title")
+    game_build = game_commands.add_parser(
+        "build",
+        help="Build an ESP-Mosaico AOT Bundle with the pinned MicroPixel SDK",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    game_build.add_argument("path", help="Game directory under games/")
+    game_build.add_argument(
+        "--profile",
+        choices=("development", "release", "size", "performance"),
+        default="release",
+        help="MicroPixel Guest optimization profile",
+    )
+    game_sim = game_commands.add_parser("sim", help="Run a MicroPixel game in the Linux WAMR/SDL2 simulator")
+    game_sim.add_argument("path", help="Game directory under games/")
+    game_sim.add_argument("--headless", action="store_true", help="Use deterministic off-screen rendering")
+    game_sim.add_argument("--scenario", help="Versioned input replay JSON")
+    game_sim.add_argument("--frames", type=int, default=1200, help="Maximum simulated frames")
+    game_sim.add_argument("--dump-ppm", help="Final RGB framebuffer output")
+    game_sim.add_argument("--report", help="Structured acceptance report output")
+    game_sim.add_argument("--reset-storage", action="store_true", help="Clear this game's simulator state first")
+    game_sim.add_argument("--skip-build", action="store_true", help="Reuse revision/source-matched WASM")
+    game_sim.add_argument("--timeout", type=positive_timeout, default=300.0)
+    game_build.add_argument("--force", action="store_true", help="Rebuild unchanged inputs")
+    game_build.add_argument(
+        "--timeout", type=positive_timeout, default=300.0, help="Build timeout in seconds"
+    )
     return parser
 
 
@@ -328,6 +370,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             result = install(REPOSITORY, arguments, context)
         elif arguments.command == "recover":
             result = recover(REPOSITORY, arguments, context)
+        elif arguments.command == "game":
+            if arguments.game_command == "create":
+                result = create_game(REPOSITORY, arguments, context)
+            elif arguments.game_command == "build":
+                result = build_game(REPOSITORY, arguments, context)
+            else:
+                result = simulate_game(REPOSITORY, arguments, context)
         else:
             return monitor(REPOSITORY, arguments, context, arguments.json)
     except MosaicoError as error:

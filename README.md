@@ -28,6 +28,25 @@ GSP applications can preview 480×480 scenes on the PC before flashing. Use
 **espressif/esp-gsp 1.1.0** submodule (`submodule/esp-gsp`).
 `projects/factory` remains LVGL.
 
+MicroPixel games live under `games/` and build against the pinned
+`submodule/micropixel` runtime SDK. The current integration supports offline
+project creation and ESP32-S31 Bundle builds:
+
+```sh
+python mosaico.py game create games/my-game \
+    --app-id com.example.my-game --title "My Game"
+python mosaico.py game build games/my-game
+python mosaico.py game sim games/mosaic-runner --headless \
+  --scenario games/mosaic-runner/scenarios/complete.json --frames 800
+```
+
+The PC simulator runs MicroPixel Wasm directly with pinned WAMR and SDL2; it is separate from the GSP simulator.
+
+Game installation remains disabled until the ESP-Iris MicroPixel App service
+is integrated. Do not open the ESP-Mosaico USB interface with the upstream
+MicroPixel CLI. See the
+[local integration design](docs/micropixel-game-runtime-integration.zh-CN.md).
+
 ## Unified device commands
 
 Use the repository-level product commands for installation, logs, and recovery:
@@ -118,6 +137,8 @@ partitions without explicit user authorization.
 
 - `projects/` — developer applications; start from `projects/factory`.
   `projects/gsp_hello` is the GSP Hello World (PC sim + device install).
+- `games/` — MicroPixel Guest games built as ESP32-S31 AOT Bundles.
+- `submodule/micropixel/` — pinned MicroPixel Guest SDK and Host runtime.
 - `submodule/esp-gsp/` — pinned ESP-GSP 1.1.0 (device prebuilts; sim/gspc fetched separately).
 - `tools/gsp-sim/` — packs scenes and runs the standalone ESP-GSP `sim`.
 - `submodule/esp-iris/` — pinned ESP-Iris firmware component and host runtime.

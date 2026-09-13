@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "app_id": "com.espressif.mosaico.mosaic-runner",
+  "version": "0.1.0",
+  "title": "Mosaic Runner",
+  "threading": "none",
+  "pinned_memory": true,
+  "sources": ["src/main.cpp"],
+  "requirements": {
+    "schema_version": 1,
+    "display": {"layouts": ["square"], "min_width": 480, "min_height": 480},
+    "required": [],
+    "optional": ["input.touch", "input.keys", "audio.output"],
+    "any_of": [],
+    "services": {}
+  }
+}

@@ -7,3 +7,6 @@
 [submodule "submodule/esp-gsp"]
 	path = submodule/esp-gsp
 	url = https://github.com/espressif/esp-gsp.git
+[submodule "submodule/micropixel"]
+	path = submodule/micropixel
+	url = https://github.com/78/micropixel.git

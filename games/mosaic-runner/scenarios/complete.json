@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "fixed_step_us": 16667,
+  "events": [
+    {"frame": 1, "action": "right", "state": "down"},
+    {"frame": 70, "action": "jump", "state": "down"},
+    {"frame": 74, "action": "jump", "state": "up"},
+    {"frame": 170, "action": "jump", "state": "down"},
+    {"frame": 174, "action": "jump", "state": "up"},
+    {"frame": 245, "action": "jump", "state": "down"},
+    {"frame": 249, "action": "jump", "state": "up"}
+  ],
+  "expect": {
+    "exit_reason": "level_complete",
+    "required_logs": ["level_started", "coin_collected", "level_complete"],
+    "frame_sha256": "18f8d007175c64981d37b3234efe4789bae90bf0affbdd26957e9af378680a67",
+    "audio_sha256": "eb68558c62f0386ca429b957223ca3f7a8261f7919660e98e26b0180659c7679"
+  }
+}

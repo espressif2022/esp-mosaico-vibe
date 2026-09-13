@@ -13,6 +13,12 @@ under `submodule/esp-mosaico-bsp/examples/`. Examples referenced by the guides
 in `skills/` live in this BSP repository, so initialize and inspect the
 `submodule/esp-mosaico-bsp/` submodule before using those examples.
 
+The `submodule/micropixel/` Git submodule supplies the MicroPixel Guest SDK,
+build tools, ABI, and Host runtime. MicroPixel games live under `games/`, not
+`projects/`. For game work, read `skills/micropixel-game/SKILL.md`; for Host,
+partition, transport, or Recovery integration, read
+`skills/micropixel-runtime/SKILL.md`.
+
 ## Route development work
 
 ### Resolve the PC environment
@@ -60,6 +66,9 @@ confirmation before clone or install.
    invent board or component APIs.
 6. Keep user-facing documentation in `docs/`, public product tooling in
    `tools/`, and private agent-facing documentation or tools in `.agents/`.
+7. Create and build MicroPixel games only through `python mosaico.py game ...`.
+   Game device installation is unavailable until the ESP-Iris App service is
+   implemented; do not bypass that boundary with the upstream USB CLI.
 
 ### Preserve the retained recovery path
 

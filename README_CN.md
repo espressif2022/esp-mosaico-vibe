@@ -23,6 +23,23 @@
 **espressif/esp-gsp 1.1.0**（`submodule/esp-gsp`）。
 `projects/factory` 仍是 LVGL 参考工程。
 
+MicroPixel 游戏位于 `games/`，使用固定的 `submodule/micropixel` Runtime SDK。
+当前集成支持离线创建工程和构建 ESP32-S31 Bundle：
+
+```sh
+python mosaico.py game create games/my-game \
+    --app-id com.example.my-game --title "My Game"
+python mosaico.py game build games/my-game
+python mosaico.py game sim games/mosaic-runner --headless \
+  --scenario games/mosaic-runner/scenarios/complete.json --frames 800
+```
+
+PC 模拟器使用固定 WAMR 与 SDL2 直接运行 MicroPixel Wasm，与 GSP 模拟器并列且不经过 GSP。
+
+ESP-Iris MicroPixel App Service 接通前不开放游戏安装。不要使用上游 MicroPixel CLI
+直接占用 ESP-Mosaico USB。完整边界和后续阶段见
+[`docs/micropixel-game-runtime-integration.zh-CN.md`](docs/micropixel-game-runtime-integration.zh-CN.md)。
+
 ## 统一设备命令
 
 日常安装、日志和恢复统一通过仓库根目录的 `mosaico.py` 完成：
@@ -101,6 +118,8 @@ ESP-Mosaico 只有一个 High-Speed USB 接口。正常固件和 Recovery 都会
 
 - `projects/`：开发者工程目录，新工程从 `projects/factory` 开始。
   `projects/gsp_hello` 是 GSP Hello World（PC 仿真 + 真机安装）。
+- `games/`：构建为 ESP32-S31 AOT Bundle 的 MicroPixel Guest 游戏。
+- `submodule/micropixel/`：固定版本的 MicroPixel Guest SDK 与 Host Runtime。
 - `submodule/esp-gsp/`：固定的 ESP-GSP 1.1.0（设备预编译库；主机仿真器与 gspc 另行下载）。
 - `tools/gsp-sim/`：打包场景并运行独立的 ESP-GSP `sim`。
 - `submodule/esp-iris/`：固定版本的 ESP-Iris 固件组件与主机运行时。

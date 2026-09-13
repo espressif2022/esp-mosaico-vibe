@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "runtime": "micropixel",
+  "repository": "https://github.com/78/micropixel.git",
+  "revision": "6d5b0bf2cc64713c06ac781252bd2b68835f89b2",
+  "board_profile": "esp-mosaico",
+  "target": "esp32s31",
+  "aot_arch": "riscv32-ilp32f",
+  "aot_format": 6,
+  "bundle_format": 1,
+  "guest_abi": {
+    "major": 2,
+    "minimum_minor": 0
+  },
+  "transport": "esp-iris",
+  "recovery_required": true
+}
