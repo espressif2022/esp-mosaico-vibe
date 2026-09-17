@@ -13,6 +13,6 @@ include("${CMAKE_CURRENT_LIST_DIR}/../../cmake/raylib_lite_engine.cmake")
 mosaico_game_sdk_configure_gsp_compiler()
 mosaico_game_sdk_add_components(RAYLIB)
 include("${CMAKE_CURRENT_LIST_DIR}/../../cmake/mosaico_idf_project.cmake")
-project(raylib_shooter VERSION 1.0.0)
+project(underwater_360 VERSION 1.0.0)
 
 include(../../cmake/system_update.cmake)
