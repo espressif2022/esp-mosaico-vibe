@@ -1,48 +1,25 @@
 #!/usr/bin/env python3
-"""Repository-local launcher for the pinned ESP-Mosaico utilities submodule."""
-
-from __future__ import annotations
-
+"""Launch the product CLI pinned by this workspace."""
 from pathlib import Path
 import sys
 
-
-REPOSITORY_ROOT = Path(__file__).resolve().parent
-UTILS_ROOT = REPOSITORY_ROOT / "submodule" / "esp-mosaico-utils"
-TOOLS_ROOT = UTILS_ROOT / "esp-mosaico-recovery"
-PACKAGE_ROOT = TOOLS_ROOT / "tools"
-
-# Game development is owned by this workspace because it compiles project
-# sources into the local RGB565 simulator. Device and recovery commands remain
-# pinned to esp-mosaico-utils below.
-if "game" in sys.argv[1:]:
-    game_index = sys.argv.index("game")
-    sys.path.insert(0, str(REPOSITORY_ROOT / "submodule" / "raylib-lite-engine" / "tools"))
-    from game_cli import main as game_main  # noqa: E402
-
-    raise SystemExit(game_main(
-        sys.argv[game_index + 1:],
-        repository=REPOSITORY_ROOT,
-        tool_root=TOOLS_ROOT,
-        global_args=sys.argv[1:game_index],
-    ))
-
-if not (PACKAGE_ROOT / "mosaico_cli" / "cli.py").is_file():
-    print(
-        "mosaico: the esp-mosaico-utils submodule is unavailable; run "
-        "'git submodule update --init submodule/esp-mosaico-utils'.",
-        file=sys.stderr,
-    )
+if sys.version_info < (3, 10):
+    print("mosaico: this workspace requires Python 3.10 or newer", file=sys.stderr)
     raise SystemExit(3)
-sys.path.insert(0, str(PACKAGE_ROOT))
 
-from mosaico_cli.cli import main  # noqa: E402
+TOOLS_ROOT = Path(__file__).resolve().parent / "submodule/esp-mosaico-utils/mosaico-tools"
+if not (TOOLS_ROOT / "tools/mosaico_cli/cli.py").is_file():
+    print("mosaico: initialize tools with 'git submodule update --init submodule/esp-mosaico-utils'", file=sys.stderr)
+    raise SystemExit(3)
+sys.path.insert(0, str(TOOLS_ROOT / "tools"))
+if sys.argv[1:3] == ["game", "install"]:
+    sys.path.insert(0, str(Path(__file__).resolve().parent / "tools"))
+    from game_store import main as install_game
 
+    raise SystemExit(install_game(
+        sys.argv[3:], repository=Path(__file__).resolve().parent, tool_root=TOOLS_ROOT,
+    ))
+from mosaico_cli.cli import main
 
 if __name__ == "__main__":
-    try:
-        raise SystemExit(main(tool_root=TOOLS_ROOT))
-    except SystemExit as error:
-        if error.code == 0 and any(value in {"-h", "--help"} for value in sys.argv[1:]):
-            print("\nGame development:\n  game                Create, simulate, or build a Raylib game")
-        raise
+    raise SystemExit(main(tool_root=TOOLS_ROOT))
