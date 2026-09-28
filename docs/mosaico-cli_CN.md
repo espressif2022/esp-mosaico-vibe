@@ -19,7 +19,7 @@ mosaico.py
 │   ├── system-update
 │   └── test enter-recovery / recovery-wifi / bridge-code
 ├── recover
-└── game create/new/sim/run/build（BSP 示例与引擎 Host）/ install（MOSGAME 包）
+└── game create/new/sim/run/build（引擎示例与 Host）/ install（MOSGAME 包）
 ```
 
 ## 命令职责
@@ -40,7 +40,7 @@ mosaico.py
 | `iris app-update` | 仅更新正常应用代码，要求完整分区表与设备一致 |
 | `iris system-update` | 新应用、分区布局或资源变化的推荐入口，按更新包清单写入 |
 | `recover` | 初始化或恢复设备基础固件，包括 ESP-Iris 不可达时的恢复 |
-| `game` | 从 BSP 示例创建/仿真 native 游戏，或用 `game install <game.bin>` 安装启动器 `MOSGAME` 包；见[游戏开发入口](game-development_CN.md) |
+| `game` | 在引擎目录创建、仿真或构建游戏，或用 `game install <game.bin>` 安装启动器 `MOSGAME` 包；见[游戏开发入口](game-development_CN.md) |
 
 `iris test` 下的命令用于分别测试 Recovery 流程：
 

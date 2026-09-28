@@ -14,7 +14,8 @@ SDK 和引擎与本工作区并列检出时，以 Sky Hop 为例：
 cd ../esp-mosaico-elf-game-sdk
 cmake -S examples/sky_hop -B build/sky_hop \
   -DCMAKE_TOOLCHAIN_FILE="$PWD/cmake/mosaico-riscv32.cmake" \
-  -DRAYLIB_LITE_ENGINE_ROOT="$PWD/../raylib-lite-engine"
+  -DRAYLIB_LITE_ENGINE_ROOT="$PWD/../raylib-lite-engine" \
+  -DMOSAICO_LAUNCHER_ROOT="$PWD/../esp-mosaico-game"
 cmake --build build/sky_hop
 cd ../esp-mosaico-vibe
 python mosaico.py game install \
@@ -29,5 +30,20 @@ python mosaico.py game install \
 SDK 包和 `game install`，不更新应用固件。启动器固件本身仍通过受管的
 Iris system-update 更新。真机还需验证按键、触摸、屏幕、音频和性能。
 
-`python mosaico.py game create/sim/build` 仍支持从 BSP 模板创建 native
-应用；生成的 `projects/<name>` 属于用户工作内容，不提交到本工作区。
+`python mosaico.py game create/sim/build` 使用 `.mosaico.json` 中
+`dependencies.raylib` 指定的 Raylib Lite Engine（并列检出的
+`../raylib-lite-engine`），可用 `RAYLIB_LITE_ENGINE_ROOT` 覆盖。新游戏位于该引擎的
+`examples/<name>`，不会从 BSP 的旧游戏模板复制到 `projects/`。可用模板和可构建游戏
+来自引擎的 `tools/game_cli.py list`：
+
+```sh
+python mosaico.py game create my_game --template shooter
+python mosaico.py game sim --project examples/my_game --headless --frames 300
+python mosaico.py game build my_game --target iris
+```
+
+`--target iris` 用 `mosaico-tools/templates/raylib_lite_iris` 的配置和分区表把引擎游戏
+包装成受管 ESP-Iris 应用，生成的工程与构建目录位于 `.codex-runs/mosaico/raylib-iris/`。
+原生构建只需要 `dependencies.bsp` 提供的 BSP，板级平台随引擎
+`ports/esp_mosaico/` 提供。结果通过 system-update 流程安装，不使用 ESP-IDF 烧录目标；
+游戏大厅 ELF 仍按上面的 SDK 打包和 `game install` 流程安装。

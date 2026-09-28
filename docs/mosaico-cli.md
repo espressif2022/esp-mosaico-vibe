@@ -19,7 +19,7 @@ mosaico.py
 │   ├── system-update
 │   └── test enter-recovery / recovery-wifi / bridge-code
 ├── recover
-└── game create/new/sim/run/build (BSP examples and engine Host) / install (MOSGAME bundle)
+└── game create/new/sim/run/build (engine examples and Host) / install (MOSGAME bundle)
 ```
 
 ## Command responsibilities
@@ -40,7 +40,7 @@ mosaico.py
 | `iris app-update` | Update normal application code only; requires the complete partition table to match the device |
 | `iris system-update` | Recommended entry for a new application, partition layout changes or resource changes; writes according to the update bundle manifest |
 | `recover` | Provision or restore the device's base firmware, including when ESP-Iris is unreachable |
-| `game` | Create/simulate native BSP examples or install a launcher `MOSGAME` bundle with `game install <game.bin>`; see [game development](game-development.md) |
+| `game` | Create, simulate or build games in the engine checkout, or install a launcher `MOSGAME` bundle with `game install <game.bin>`; see [game development](game-development.md) |
 
 Commands under `iris test` exercise individual Recovery workflows:
 

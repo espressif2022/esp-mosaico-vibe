@@ -8,7 +8,7 @@
   "dependencies": {
     "bsp": "submodule/esp-mosaico-bsp",
     "esp_iris": "submodule/esp-mosaico-utils/ESP-Iris",
-    "raylib": "submodule/raylib-lite-engine"
+    "raylib": "../raylib-lite-engine"
   },
   "build": {
     "runner": "builtin"
