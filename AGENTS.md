@@ -16,9 +16,11 @@ AI (GPIO7) selects Vibe Mode; Boot (GPIO61) selects ROM Download Mode.
   Vibe Mode firmware and Recovery integration/ABI belong in utils'
   `esp-mosaico-recovery/`, fixtures in its `tests/firmware/`.
   Never use Vibe Mode firmware as an application template or mix test fixtures into user apps.
-- Board support and complete game examples belong in `submodule/esp-mosaico-bsp/`;
-  generic game implementation/tests belong in `submodule/raylib-lite-engine/`.
-  Initialize and inspect only needed submodules, including BSP before using its examples.
+- Board support belongs in `submodule/esp-mosaico-bsp/`; maintained reference games,
+  Host simulation and generic game implementation/tests belong in
+  `submodule/raylib-lite-engine/`. User-owned games belong in `projects/` or their
+  own repositories. Do not commit temporary verification games.
+  Initialize and inspect only needed submodules. BSP game backups are not used.
 - Keep user documentation in `docs/`, indexed by `docs/README.md`; keep root
   English/Chinese READMEs aligned and short. Component API/protocol docs stay with owners.
 - Agent guidance/tools belong in `.agents/`, shared skills in version-controlled
